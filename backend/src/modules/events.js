@@ -7,8 +7,13 @@ export async function getAllEvents(_, res) {
 }
 
 export async function addNewEvent(req, res) {
-  const body = req.body;
-  const payload = { ...body, id: crypto.randomUUID(), createdAt: new Date() };
+  const body = await req.body;
+  const payload = {
+    ...body,
+    id: crypto.randomUUID(),
+    createdAt: new Date(),
+    cover: req.file.filename,
+  };
 
   await db.read();
   await db.update(({ events }) => events.push(payload));
