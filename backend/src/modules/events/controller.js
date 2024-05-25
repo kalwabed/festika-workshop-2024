@@ -1,4 +1,4 @@
-import db from "../lib/database.js";
+import db from "../../lib/database.js";
 
 export async function getAllEvents(_, res) {
   await db.read();
@@ -7,7 +7,7 @@ export async function getAllEvents(_, res) {
 }
 
 export async function addNewEvent(req, res) {
-  const body = await req.body;
+  const body = req.body;
   const payload = {
     ...body,
     id: crypto.randomUUID(),

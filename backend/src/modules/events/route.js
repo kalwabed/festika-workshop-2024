@@ -5,8 +5,8 @@ import {
   getEventById,
   removeEvent,
   updateEvent,
-} from "./modules/events.js";
-import { uploadSingle } from "./lib/multer.js";
+} from "./controller.js";
+import { uploadSingle } from "../../middlewares/multer.js";
 
 const router = express.Router();
 
