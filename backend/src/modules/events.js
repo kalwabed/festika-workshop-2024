@@ -60,3 +60,18 @@ export async function removeEvent(req, res) {
     .status(204)
     .json({ success: true, message: "Event has been deleted!" });
 }
+
+export async function getEventById(req, res) {
+  const id = req.params.id;
+
+  await db.read();
+  const event = db.data.events.find((event) => event.id === id);
+
+  if (!event) {
+    return res
+      .status(404)
+      .json({ message: "Event is not found!", success: false });
+  }
+
+  return res.json({ data: event, success: true });
+}
