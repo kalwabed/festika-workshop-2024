@@ -1,10 +1,8 @@
-const checkIfUserIsAlreadyLogin = (req, res, next) => {
-  if (!req.session?.user) {
-    return res
-      .status(401)
-      .json({ success: false, message: "Please login to proceed!" });
-  }
-  next();
-};
+import { expressjwt as jwt } from "express-jwt";
 
-export default checkIfUserIsAlreadyLogin;
+const whitelistRoutes = ["/login", "/signup"];
+
+export const jwtAuth = jwt({
+  secret: "very-secret-KEY",
+  algorithms: ["HS512"],
+}).unless({ path: whitelistRoutes });

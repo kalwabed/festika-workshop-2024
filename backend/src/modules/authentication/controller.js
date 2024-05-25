@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 export async function signIn(req, res) {
   const { username, password } = req.body;
 
@@ -7,5 +9,10 @@ export async function signIn(req, res) {
       .json({ success: false, message: "Username or password is empty!" });
   }
 
-  return res.json({ success: true });
+  const token = jwt.sign({ username }, "very-secret-KEY", {
+    algorithm: "HS512",
+    expiresIn: "1 day",
+  });
+
+  return res.json({ success: true, token });
 }

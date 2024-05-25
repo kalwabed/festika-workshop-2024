@@ -1,6 +1,6 @@
 import db from "../../lib/database.js";
 
-export async function getAllEvents(_, res) {
+export async function getAllEvents(req, res) {
   await db.read();
   const events = db.data.events;
   return res.json({ data: events });
