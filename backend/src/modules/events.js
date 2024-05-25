@@ -38,5 +38,25 @@ export async function updateEvent(req, res) {
   event.name = body.name;
   await db.write();
 
-  return res.json({ event });
+  return res.json({ data: event, success: true });
+}
+
+export async function removeEvent(req, res) {
+  const id = req.params.id;
+
+  await db.read();
+  const deletedEventIdx = db.data.events.findIndex((event) => event.id === id);
+
+  if (deletedEventIdx === -1) {
+    return res
+      .status(404)
+      .json({ message: "Event is not found!", success: false });
+  }
+
+  db.data.events.splice(deletedEventIdx, 1);
+  await db.write();
+
+  return res
+    .status(204)
+    .json({ success: true, message: "Event has been deleted!" });
 }
