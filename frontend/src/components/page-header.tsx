@@ -1,7 +1,9 @@
 import { Box, Button, Flex, Link } from '@chakra-ui/react'
-import { Link as RouterLink } from '@tanstack/react-router'
+import { Link as RouterLink, useNavigate } from '@tanstack/react-router'
 
 export default function PageHeader() {
+  const navigate = useNavigate()
+
   return (
     <Box as="header" w="full" paddingX={8} paddingY={4} borderBottom="1px solid" borderBottomColor="gray.300">
       <Flex w="full" align="center" justify="space-between">
@@ -13,7 +15,9 @@ export default function PageHeader() {
             Home
           </Link>
         </Flex>
-        <Button variant="outline">Login</Button>
+        <Button variant="outline" onClick={() => navigate({ to: '/login' })}>
+          Login
+        </Button>
       </Flex>
     </Box>
   )
