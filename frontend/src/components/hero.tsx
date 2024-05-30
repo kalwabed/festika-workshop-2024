@@ -8,7 +8,7 @@ export default function Hero() {
         <Text as="span" color="gray.600">
           All the fun starts here.
         </Text>
-        <Heading width={['100%', '75%']} lineHeight="1.25" fontSize="6xl">
+        <Heading width={['100%', '85%']} lineHeight="1.25" fontSize="6xl">
           Book your Tickets for event!
         </Heading>
 

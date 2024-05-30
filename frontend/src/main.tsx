@@ -1,10 +1,13 @@
+import '@fontsource-variable/inter'
 import React, { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { ChakraProvider } from '@chakra-ui/react'
+
+import theme from '~utils/theme'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
-import { ChakraProvider } from '@chakra-ui/react'
 
 // Create a new router instance
 const router = createRouter({ routeTree })
@@ -22,7 +25,7 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <RouterProvider router={router} />
       </ChakraProvider>
     </StrictMode>
