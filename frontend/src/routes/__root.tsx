@@ -7,7 +7,7 @@ export const Route = createRootRoute({
   component: () => (
     <>
       <PageHeader />
-      <Flex as="main" flexDir="column" w="full">
+      <Flex as="main" px={[4, 0]} flexDir="column" w="full">
         <Outlet />
       </Flex>
       <TanStackRouterDevtools />
