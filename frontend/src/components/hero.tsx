@@ -3,7 +3,7 @@ import heroImage from '~assets/hero.png'
 
 export default function Hero() {
   return (
-    <Flex mt={24} px={[0, 8]} gap={8}>
+    <Flex mt={24} maxW="7xl" width="full" mx="auto" px={4} gap={8}>
       <Box>
         <Text as="span" color="gray.600">
           All the fun starts here.
@@ -17,7 +17,9 @@ export default function Hero() {
         </Text>
         <Text color="gray.600">Your ticket to live entertainment</Text>
 
-        <Button mt={12}>Get started</Button>
+        <Button mt={12} colorScheme="orange">
+          Get started
+        </Button>
       </Box>
       <Box>
         <Image src={heroImage} alt="Hero image" width={600} height={500} />
