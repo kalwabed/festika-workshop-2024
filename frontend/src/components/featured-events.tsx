@@ -9,7 +9,6 @@ function FeaturedEvents() {
       mt={20}
       border="1px solid"
       borderColor="gray.300"
-      rounded="lg"
       bgColor="gray.50"
       shadow="md"
       py={10}
