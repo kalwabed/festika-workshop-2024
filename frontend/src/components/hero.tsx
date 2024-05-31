@@ -17,7 +17,7 @@ export default function Hero() {
         </Text>
         <Text color="gray.600">Your ticket to live entertainment</Text>
 
-        <Button mt={12} colorScheme="orange">
+        <Button mt={12} size="lg" colorScheme="orange">
           Get started
         </Button>
       </Box>
