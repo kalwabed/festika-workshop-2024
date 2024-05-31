@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Flex, HStack, Heading, Image, SimpleGrid, Text } from '@chakra-ui/react'
+import { Badge, Box, Button, Flex, HStack, Heading, Image, SimpleGrid, Tag, Text } from '@chakra-ui/react'
 
 function OtherEvents() {
   return (
@@ -7,7 +7,7 @@ function OtherEvents() {
         <Heading as="h2" fontSize="4xl" lineHeight="1.625">
           Other Events
         </Heading>
-        <Text>Be sure not to miss these events</Text>
+        <Text color="gray.500">Be sure not to miss these events</Text>
       </Box>
 
       <SimpleGrid columns={2} mt={8} gap={12}>
@@ -23,8 +23,9 @@ function OtherEvents() {
             />
             <Box>
               <HStack>
-                <Badge>React</Badge>
-                <Badge>React</Badge>
+                <Badge colorScheme="green">Open</Badge>
+                <Tag size="sm">#react</Tag>
+                <Tag size="sm">#vite</Tag>
               </HStack>
               <Heading as="h3" fontSize="2xl" my={2}>
                 Card 1
