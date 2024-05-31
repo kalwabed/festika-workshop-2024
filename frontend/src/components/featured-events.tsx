@@ -1,4 +1,4 @@
-import { Box, Button, Flex, HStack, Heading, Image, Text } from '@chakra-ui/react'
+import { Badge, Box, Button, Flex, HStack, Heading, Image, Text } from '@chakra-ui/react'
 
 function FeaturedEvents() {
   return (
@@ -25,7 +25,11 @@ function FeaturedEvents() {
         {[1, 2, 3, 4].map(k => (
           <Flex key={k} flexDir="column" border="1px solid" borderColor="gray.300" p={4}>
             <Image src="https://picsum.photos/id/10/320/280" htmlWidth={300} htmlHeight={280} alt="test" />
-            <Heading as="h3" fontSize="2xl" mt={4}>
+            <HStack my={2}>
+              <Badge>React</Badge>
+              <Badge>React</Badge>
+            </HStack>
+            <Heading as="h3" fontSize="2xl">
               Card 1
             </Heading>
             <Text mt={3}>29 Jan - Plaza Ambarrukmo</Text>
