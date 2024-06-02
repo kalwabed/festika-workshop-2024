@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Link as RouterLink } from '@tanstack/react-router'
+import { createLazyFileRoute, Link as RouterLink, useNavigate } from '@tanstack/react-router'
 import {
   Flex,
   Box,
@@ -11,8 +11,11 @@ import {
   Button,
   Heading,
   Text,
+  useToast,
 } from '@chakra-ui/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import ky from 'ky'
+import cookies from 'js-cookie'
 
 export const Route = createLazyFileRoute('/login')({
   component: LoginPage,
@@ -25,9 +28,26 @@ type Inputs = {
 
 function LoginPage() {
   const { register, handleSubmit } = useForm<Inputs>()
+  const navigate = useNavigate()
+  const toast = useToast()
 
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    console.log(data)
+  const onSubmit: SubmitHandler<Inputs> = async data => {
+    const res: { success: boolean; token: string; message: string } = await ky
+      .post('http://localhost:3000/login', {
+        json: data,
+      })
+      .json()
+
+    if (res.success) {
+      cookies.set('token', res.token)
+      return navigate({ to: '/new' })
+    }
+
+    toast({
+      title: 'Login failed',
+      description: res.message,
+      status: 'error',
+    })
   }
 
   return (

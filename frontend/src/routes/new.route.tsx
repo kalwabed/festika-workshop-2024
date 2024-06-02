@@ -5,7 +5,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 export const Route = createFileRoute('/new')({
   beforeLoad: async () => {
     const token = cookies.get('token')
-    console.log('token', token)
+
     if (!token) {
       throw redirect({
         to: '/login',

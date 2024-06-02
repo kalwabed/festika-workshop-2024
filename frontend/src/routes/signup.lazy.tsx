@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Link as RouterLink } from '@tanstack/react-router'
+import { createLazyFileRoute, Link as RouterLink, useNavigate } from '@tanstack/react-router'
 import {
   Flex,
   Box,
@@ -13,16 +13,47 @@ import {
   Heading,
   Text,
   Link,
+  useToast,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import ky from 'ky'
 
 export const Route = createLazyFileRoute('/signup')({
   component: SignUpPage,
 })
 
+interface Input {
+  username: string
+  firstName: string
+  lastName: string
+  password: string
+}
+
 function SignUpPage() {
+  const { register, handleSubmit } = useForm<Input>()
   const [showPassword, setShowPassword] = useState(false)
+  const toast = useToast()
+  const navigate = useNavigate()
+
+  const onSubmit: SubmitHandler<Input> = async data => {
+    const res: { success: boolean; message: string } = await ky
+      .post('http://localhost:3000/signup', {
+        json: data,
+      })
+      .json()
+
+    toast({
+      title: 'User signup',
+      description: res.message,
+      status: res.success ? 'success' : 'error',
+    })
+
+    if (res.success) {
+      return navigate({ to: '/login' })
+    }
+  }
 
   return (
     <Flex mt={24} align={'center'} justify={'center'}>
@@ -35,30 +66,30 @@ function SignUpPage() {
             to enjoy all of our cool features ✌️
           </Text>
         </Stack>
-        <Box rounded={'lg'} bg="white" boxShadow={'lg'} p={8}>
+        <Box as="form" onSubmit={handleSubmit(onSubmit)} rounded={'lg'} bg="white" boxShadow={'lg'} p={8}>
           <Stack spacing={4}>
             <HStack>
               <Box>
                 <FormControl id="firstName" isRequired>
                   <FormLabel>First Name</FormLabel>
-                  <Input type="text" />
+                  <Input type="text" {...register('firstName')} />
                 </FormControl>
               </Box>
               <Box>
                 <FormControl id="lastName">
                   <FormLabel>Last Name</FormLabel>
-                  <Input type="text" />
+                  <Input type="text" {...register('lastName')} />
                 </FormControl>
               </Box>
             </HStack>
-            <FormControl id="email" isRequired>
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+            <FormControl id="username" isRequired>
+              <FormLabel>Username</FormLabel>
+              <Input {...register('username')} />
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? 'text' : 'password'} />
+                <Input {...register('password')} type={showPassword ? 'text' : 'password'} />
                 <InputRightElement h={'full'}>
                   <Button variant={'ghost'} onClick={() => setShowPassword(showPassword => !showPassword)}>
                     {showPassword ? <ViewIcon /> : <ViewOffIcon />}
@@ -69,6 +100,7 @@ function SignUpPage() {
             <Stack spacing={10} pt={2}>
               <Button
                 loadingText="Submitting"
+                type="submit"
                 size="lg"
                 bg={'blue.400'}
                 color={'white'}
@@ -93,4 +125,3 @@ function SignUpPage() {
     </Flex>
   )
 }
-
