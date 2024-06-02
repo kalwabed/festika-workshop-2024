@@ -12,12 +12,24 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 export const Route = createLazyFileRoute('/login')({
   component: LoginPage,
 })
 
+type Inputs = {
+  username: string
+  password: string
+}
+
 function LoginPage() {
+  const { register, handleSubmit } = useForm<Inputs>()
+
+  const onSubmit: SubmitHandler<Inputs> = data => {
+    console.log(data)
+  }
+
   return (
     <Flex mt={24} align={'center'} justify={'center'}>
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
@@ -32,14 +44,14 @@ function LoginPage() {
           </Text>
         </Stack>
         <Box rounded={'lg'} bg="white" boxShadow={'lg'} p={8}>
-          <Stack spacing={4}>
+          <Stack as="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
             <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <FormLabel>Username</FormLabel>
+              <Input {...register('username')} />
             </FormControl>
             <FormControl id="password">
               <FormLabel>Password</FormLabel>
-              <Input type="password" />
+              <Input type="password" {...register('password')} />
             </FormControl>
             <Stack spacing={10}>
               <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
@@ -47,6 +59,7 @@ function LoginPage() {
                 <Link color={'blue.400'}>Forgot password?</Link>
               </Stack>
               <Button
+                type="submit"
                 bg={'blue.400'}
                 color={'white'}
                 _hover={{
@@ -65,4 +78,3 @@ function LoginPage() {
     </Flex>
   )
 }
-

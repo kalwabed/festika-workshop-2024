@@ -1,7 +1,17 @@
 import { Box, Button, FormControl, FormLabel, HStack, Heading, Input, Textarea, VStack } from '@chakra-ui/react'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import cookies from 'js-cookie'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
-export const Route = createLazyFileRoute('/new')({
+export const Route = createFileRoute('/new')({
+  beforeLoad: async () => {
+    const token = cookies.get('token')
+    console.log('token', token)
+    if (!token) {
+      throw redirect({
+        to: '/login',
+      })
+    }
+  },
   component: NewEventPage,
 })
 
@@ -13,6 +23,7 @@ function NewEventPage() {
       </Heading>
       <VStack
         as="form"
+        shadow="md"
         padding={4}
         rounded="md"
         align="end"

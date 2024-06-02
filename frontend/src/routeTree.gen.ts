@@ -13,11 +13,11 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as NewRouteImport } from './routes/new.route'
 
 // Create Virtual Routes
 
 const SignupLazyImport = createFileRoute('/signup')()
-const NewLazyImport = createFileRoute('/new')()
 const LoginLazyImport = createFileRoute('/login')()
 const IndexLazyImport = createFileRoute('/')()
 
@@ -28,15 +28,15 @@ const SignupLazyRoute = SignupLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/signup.lazy').then((d) => d.Route))
 
-const NewLazyRoute = NewLazyImport.update({
-  path: '/new',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/new.lazy').then((d) => d.Route))
-
 const LoginLazyRoute = LoginLazyImport.update({
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
+
+const NewRouteRoute = NewRouteImport.update({
+  path: '/new',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
@@ -54,18 +54,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/new': {
+      id: '/new'
+      path: '/new'
+      fullPath: '/new'
+      preLoaderRoute: typeof NewRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/new': {
-      id: '/new'
-      path: '/new'
-      fullPath: '/new'
-      preLoaderRoute: typeof NewLazyImport
       parentRoute: typeof rootRoute
     }
     '/signup': {
@@ -82,8 +82,8 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
+  NewRouteRoute,
   LoginLazyRoute,
-  NewLazyRoute,
   SignupLazyRoute,
 })
 
@@ -96,19 +96,19 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/login",
         "/new",
+        "/login",
         "/signup"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
     },
+    "/new": {
+      "filePath": "new.route.tsx"
+    },
     "/login": {
       "filePath": "login.lazy.tsx"
-    },
-    "/new": {
-      "filePath": "new.lazy.tsx"
     },
     "/signup": {
       "filePath": "signup.lazy.tsx"
