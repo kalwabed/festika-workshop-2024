@@ -1,6 +1,19 @@
-import { Badge, Box, Button, Flex, HStack, Heading, Image, SimpleGrid, Tag, Text } from '@chakra-ui/react'
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  Image,
+  SimpleGrid,
+  Tag,
+  Text,
+} from "@chakra-ui/react";
+import { Event } from "~types";
+import { coverSrc, formatDate } from "~utils/event";
 
-function OtherEvents() {
+function OtherEvents(props: { events: Event[] }) {
   return (
     <Box maxW="8xl" w="full" mx="auto" mt={20}>
       <Box as="section">
@@ -11,28 +24,31 @@ function OtherEvents() {
       </Box>
 
       <SimpleGrid columns={2} mt={8} gap={12}>
-        {[1, 2, 3, 4].map(k => (
-          <Flex key={k} gap={4}>
+        {props.events?.map((event) => (
+          <Flex key={event.id} gap={4}>
             <Image
-              src="https://picsum.photos/id/10/420/280"
+              src={coverSrc(event.cover)}
               rounded="md"
               height={64}
               htmlWidth={310}
               htmlHeight={380}
-              alt="test"
+              alt="Event cover image"
             />
             <Box>
               <HStack>
                 <Badge colorScheme="green">Open</Badge>
-                <Tag size="sm">#react</Tag>
-                <Tag size="sm">#vite</Tag>
+                {event.tags.split(",").map((tag) => (
+                  <Tag key={tag} size="sm">#{tag}</Tag>
+                ))}
               </HStack>
               <Heading as="h3" fontSize="2xl" my={2}>
-                Card 1
+                {event.title}
               </Heading>
-              <Text>⏰ 29 Jan, 11.00 - 15.30 WIB</Text>
-              <Text my={2}>📍 Plaza Ambarrukmo</Text>
-              <Text color="gray.600">Lorem ipsum dolor sit amet, officia excepteur ex fugiat.</Text>
+              <Text>
+                ⏰ {formatDate(event.date)}, {event.from} - {event.to} WIB
+              </Text>
+              <Text my={2}>📍 {event.location}</Text>
+              <Text color="gray.600">{event.description}</Text>
               <Button colorScheme="orange" variant="outline" mt={4}>
                 Get Tickets
               </Button>
@@ -41,7 +57,7 @@ function OtherEvents() {
         ))}
       </SimpleGrid>
     </Box>
-  )
+  );
 }
 
-export default OtherEvents
+export default OtherEvents;

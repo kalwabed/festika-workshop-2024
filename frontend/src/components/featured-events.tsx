@@ -10,10 +10,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Event } from "~types";
+import { coverSrc, formatDate } from "~utils/event";
 
 function FeaturedEvents(props: { events: Event[] }) {
   const { events } = props;
-  const event = events[0];
+  const event = events[0] ?? {};
 
   return (
     <Box
@@ -37,7 +38,7 @@ function FeaturedEvents(props: { events: Event[] }) {
 
       <Flex mt={8} gap={8}>
         <Image
-          src={`http://localhost:3000/images/${event.cover}`}
+          src={coverSrc(event.cover)}
           rounded="md"
           height={80}
           htmlWidth={360}
@@ -55,9 +56,7 @@ function FeaturedEvents(props: { events: Event[] }) {
             {event.title}
           </Heading>
           <Text>
-            ⏰{" "}
-            {Intl.DateTimeFormat("id", { day: "numeric", month: "short" })
-              .format(new Date(event.date))}, {event.from} - {event.to} WIB
+            ⏰ {formatDate(event.date)}, {event.from} - {event.to} WIB
           </Text>
           <Text my={2}>📍 {event.location}</Text>
           <Text color="gray.600">

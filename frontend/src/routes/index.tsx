@@ -19,7 +19,7 @@ function HomePage() {
     <>
       <Hero />
       <FeaturedEvents events={routeData.data} />
-      <OtherEvents />
+      <OtherEvents events={routeData.data} />
     </>
   );
 }
