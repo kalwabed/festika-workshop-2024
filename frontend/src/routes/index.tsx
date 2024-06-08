@@ -3,19 +3,22 @@ import ky from "ky";
 import FeaturedEvents from "~components/featured-events";
 import Hero from "~components/hero";
 import OtherEvents from "~components/other-events";
+import { Event } from "~types";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
-  loader: () => ky.get("http://localhost:3000/api/events"),
+  loader: async () =>
+    await ky.get("http://localhost:3000/api/events").json() as {
+      data: Event[];
+    },
 });
 
 function HomePage() {
-  const router = Route.useLoaderData();
-  console.log(router);
+  const routeData = Route.useLoaderData();
   return (
     <>
       <Hero />
-      <FeaturedEvents />
+      <FeaturedEvents events={routeData.data} />
       <OtherEvents />
     </>
   );
