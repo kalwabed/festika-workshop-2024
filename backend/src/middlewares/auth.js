@@ -3,6 +3,7 @@ import { expressjwt as jwt } from "express-jwt";
 const whitelistRoutes = [
   "/login",
   "/signup",
+  "/images/*",
   { url: "/api/events", methods: ["GET"] },
 ];
 

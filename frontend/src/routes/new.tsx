@@ -37,6 +37,7 @@ interface Form {
   to: string;
   description: string;
   tags: string;
+  cover: FileList;
 }
 
 function NewEventPage() {
@@ -46,8 +47,18 @@ function NewEventPage() {
   const addNewEvent: SubmitHandler<Form> = async (data) => {
     const authToken = Cookies.get("token");
     try {
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("location", data.location);
+      formData.append("description", data.description);
+      formData.append("from", data.from);
+      formData.append("to", data.to);
+      formData.append("tags", data.tags);
+      formData.append("date", data.date);
+      formData.append("coverImage", data.cover[0]);
+
       await ky.post("http://localhost:3000/api/events", {
-        json: data,
+        body: formData,
         headers: { Authorization: `Bearer ${authToken}` },
       })
         .json();
@@ -80,6 +91,10 @@ function NewEventPage() {
         mx="auto"
         w="full"
       >
+        <FormControl isRequired>
+          <FormLabel>Cover</FormLabel>
+          <Input type="file" accept="image/*" {...register("cover")} />
+        </FormControl>
         <FormControl isRequired>
           <FormLabel>Title</FormLabel>
           <Input {...register("title")} />
