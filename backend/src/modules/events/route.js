@@ -10,6 +10,7 @@ import { uploadSingle } from "../../middlewares/multer.js";
 
 const router = express.Router();
 
+// /api/events
 router.get("/events", getAllEvents);
 router.get("/events/:id", getEventById);
 router.post("/events", uploadSingle, addNewEvent);

@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { jwtAuth } from "./middlewares/auth.js";
 import eventRouter from "./modules/events/route.js";
 import authRouter from "./modules/authentication/route.js";
@@ -8,8 +9,10 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static(process.cwd() + "/public"));
+app.use(cors());
 
-app.use(jwtAuth);
+// app.use(jwtAuth);
 
 // auth exception handler
 app.use(function (err, _req, res, next) {

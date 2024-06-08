@@ -1,6 +1,11 @@
 import { Badge, Box, Button, Flex, HStack, Heading, Image, Tag, Text } from '@chakra-ui/react'
+import { formatDate } from '~utils/event'
+import { Event } from '~utils/types'
 
-function FeaturedEvents() {
+function FeaturedEvents(props: { events: Event[] }) {
+  const { events } = props
+  const event = events[0]
+
   return (
     <Box
       maxW="8xl"
@@ -23,7 +28,7 @@ function FeaturedEvents() {
 
       <Flex mt={8} gap={8}>
         <Image
-          src="https://picsum.photos/id/10/320/280"
+          src={`http://localhost:3000/images/${event.cover}`}
           rounded="md"
           height={80}
           htmlWidth={360}
@@ -33,15 +38,20 @@ function FeaturedEvents() {
         <Box>
           <HStack>
             <Badge colorScheme="red">Closed</Badge>
-            <Tag size="sm">#web</Tag>
-            <Tag size="sm">#devops</Tag>
+            {event.tags.split(',').map(tag => (
+              <Tag key={tag} size="sm">
+                #{tag}
+              </Tag>
+            ))}
           </HStack>
           <Heading as="h3" fontSize="5xl" my={3}>
-            Card 1
+            {event.title}
           </Heading>
-          <Text>⏰ 29 Jan, 11.00 - 15.30 WIB</Text>
-          <Text my={2}>📍 Plaza Ambarrukmo</Text>
-          <Text color="gray.600">Lorem ipsum dolor sit amet, officia excepteur ex fugiat.</Text>
+          <Text>
+            ⏰ {formatDate(event.date)}, {event.from} - {event.to} WIB
+          </Text>
+          <Text my={2}>📍 {event.location}</Text>
+          <Text color="gray.600">{event.description}</Text>
           <Button colorScheme="orange" variant="outline" mt={4}>
             Get Tickets
           </Button>
