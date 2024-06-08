@@ -1,27 +1,73 @@
-import { Box, Button, FormControl, FormLabel, HStack, Heading, Input, Textarea, VStack } from '@chakra-ui/react'
-import cookies from 'js-cookie'
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  Textarea,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
+import cookies from "js-cookie";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { SubmitHandler, useForm } from "react-hook-form";
+import ky from "ky";
+import Cookies from "js-cookie";
 
-export const Route = createFileRoute('/new')({
+export const Route = createFileRoute("/new")({
   beforeLoad: async () => {
-    const token = cookies.get('token')
+    const token = cookies.get("token");
 
     if (!token) {
       throw redirect({
-        to: '/login',
-      })
+        to: "/login",
+      });
     }
   },
   component: NewEventPage,
-})
+});
+
+interface Form {
+  title: string;
+  location: string;
+  date: string;
+  from: string;
+  to: string;
+  description: string;
+  tags: string;
+}
 
 function NewEventPage() {
+  const toast = useToast();
+  const { handleSubmit, register } = useForm<Form>();
+
+  const addNewEvent: SubmitHandler<Form> = async (data) => {
+    const authToken = Cookies.get("token");
+    try {
+      await ky.post("http://localhost:3000/api/events", {
+        json: data,
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+        .json();
+      toast({
+        title: "Sukses",
+        description: "Event berhasil ditambahkan",
+        status: "success",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Box mt={24} w="full">
       <Heading fontSize="3xl" mb={8} textAlign="center">
         Add a New Event
       </Heading>
       <VStack
+        onSubmit={handleSubmit(addNewEvent)}
         as="form"
         shadow="md"
         padding={4}
@@ -36,33 +82,36 @@ function NewEventPage() {
       >
         <FormControl isRequired>
           <FormLabel>Title</FormLabel>
-          <Input />
+          <Input {...register("title")} />
         </FormControl>
         <FormControl isRequired>
           <FormLabel>Location</FormLabel>
-          <Input />
+          <Input {...register("location")} />
         </FormControl>
         <HStack w="full">
           <FormControl isRequired>
             <FormLabel>Date</FormLabel>
-            <Input type="date" />
+            <Input type="date" {...register("date")} />
           </FormControl>
           <FormControl isRequired>
             <FormLabel>From</FormLabel>
-            <Input type="time" />
+            <Input type="time" {...register("from")} />
           </FormControl>
           <FormControl isRequired>
             <FormLabel>To</FormLabel>
-            <Input type="time" />
+            <Input type="time" {...register("to")} />
           </FormControl>
         </HStack>
         <FormControl isRequired>
           <FormLabel>Description</FormLabel>
-          <Textarea />
+          <Textarea {...register("description")} />
         </FormControl>
         <FormControl>
           <FormLabel>Tags</FormLabel>
-          <Input placeholder="Separate with comma (e.g react,vue.js)" />
+          <Input
+            placeholder="Separate with comma (e.g react,vue.js)"
+            {...register("tags")}
+          />
         </FormControl>
 
         <HStack>
@@ -75,5 +124,5 @@ function NewEventPage() {
         </HStack>
       </VStack>
     </Box>
-  )
+  );
 }

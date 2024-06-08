@@ -12,7 +12,7 @@ export async function addNewEvent(req, res) {
     ...body,
     id: crypto.randomUUID(),
     createdAt: new Date(),
-    cover: req.file.filename,
+    cover: req.file?.filename ?? "",
   };
 
   await db.read();
@@ -20,7 +20,7 @@ export async function addNewEvent(req, res) {
 
   const events = db.data.events;
 
-  return res.json({ data: events });
+  return res.status(201).json({ data: events });
 }
 
 export async function updateEvent(req, res) {
